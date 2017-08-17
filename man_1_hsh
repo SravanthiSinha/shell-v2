@@ -1,0 +1,42 @@
+.\" Manpage for hsh.
+.\" Contact sravanthi.sinha@holbertonschool.com to correct errors or typos.
+.TH hsh 1 "17 August 2017" "hsh(1)" "General Commands Manual"
+.SH NAME
+hsh \- command line interpreter (holberton shell)
+.SH SYNOPSIS
+hsh
+.SH DESCRIPTION
+hsh  is a a UNIX command line interpreter.
+.TP
+.BI Overview
+The shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands.
+.TP
+.BI Builtins
+This section lists the builtin commands which are builtin because they need to perform some operation that can't be performed by a separate
+process.  In addition to these, there are several other commands that may be builtin for efficiency (e.g.  printf(1), echo(1), test(1), etc).
+.TP
+cd -
+.TP
+cd  [directory]
+Switch to the specified directory (default HOME).  If an entry for CDPATH appears in the environment of the cd command or the shell
+variable CDPATH is set and the directory name does not begin with a slash, then the directories listed in CDPATH will be searched for
+the specified directory.  The format of CDPATH is the same as that of PATH.  If a single dash is specified as the argument, it will be
+replaced by the value of OLDPWD.  The cd command will print out the name of the directory that it actually switched to if this is dif
+ferent from the name that the user gave.  These may be different either because the CDPATH mechanism was used or because the argument
+is a single dash.
+.TP
+exit [exitstatus]
+Terminate the shell process.  If exitstatus is given it is used as the exit status of the shell; otherwise the exit status of the preceding command is used.
+.TP
+env
+Prints the current environment
+
+
+.SH SEE ALSO
+hsh(1)
+
+.SH BUGS
+No known bugs.
+
+.SH AUTHOR
+Sravanthi Sinha (sravanthi.sinha@holbertonschool.com)
