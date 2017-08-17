@@ -28,7 +28,6 @@ void get_exes(Command *cmds);
 char *_getenv(const char *name);
 int _setenv(const char *name, const char *value, int overwrite);
 int _unsetenv(const char *name);
-int exe_exists(char *s);
 void print_error(char *cmd, char *path,  int error);
 int validate_commands(Command *cmds);
 int execute_cmd(Command *cmds, int *prev_status);

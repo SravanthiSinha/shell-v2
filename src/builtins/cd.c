@@ -12,7 +12,7 @@ int change_dir(char **args)
 	char *path = NULL;
 
 	count = array_size(args);
-	if (count == 1)
+	if (count == 1) /* no path given*/
 	{
 		path = _strdup(_getenv("HOME"));
 	}
@@ -22,11 +22,20 @@ int change_dir(char **args)
 	}
 	if (path != NULL)
 	{
-		if ((_strcmp(path, "-") != 0))
+		if ((_strcmp(path, "-") != 0) && (_strcmp(path, ".") != 0) &&  count > 1)
 		{
+			if (path[0] == '/')
+				path = _stradd(_getenv("PWD"), path, NULL);
+			else
+				path = _stradd(_getenv("PWD"), path, "/");
 			if (exe_exists(path))
 			{
 				chdir(path);
+				if ((_strcmp(args[1], "..") == 0))
+				{
+					_removeafter(path, '/');
+					_removeafter(path, '/');
+				}
 				_setenv("PWD", path, 1);
 			}
 			else

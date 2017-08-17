@@ -11,6 +11,7 @@ _SRC 	= 	main.c \
 					strings/strings_4.c \
 					utils/env.c \
 					utils/utils.c \
+					utils/int_utils.c \
 					utils/array_utils.c \
 					builtins/cd.c	\
 					builtins/printenv.c \

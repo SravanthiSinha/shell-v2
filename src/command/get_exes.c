@@ -60,19 +60,3 @@ void get_exes(Command *cmds)
 	}
 	free_array(absolute_paths);
 }
-
-
-/**
- * exe_exists - Validates if the path exsits
- * @path: The path to be validated
- * Return: On Success - 1, On Failure - 0.
- */
-int exe_exists(char *path)
-{
-	struct stat fileStat;
-
-	if (lstat(path, &fileStat) == -1)
-		return (0);
-	else
-		return (1);
-}

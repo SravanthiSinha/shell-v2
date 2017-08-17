@@ -15,5 +15,6 @@ char *ltrim(char *src);
 char **_stringsplit(char *str, char delim, int *count);
 char *_strrev(char *str);
 char *_memset(char *s, char b, unsigned int n);
-int _atoi(char *input);
+char *_stradd(const char *s1, const char *s2, char *delim);
+void _removeafter(char *s, char delim);
 #endif
