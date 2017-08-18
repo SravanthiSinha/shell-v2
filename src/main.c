@@ -55,25 +55,26 @@ int main(int argc, char __attribute__((unused)) **argv)
 	{
 		printPrompt(&shell);
 		shell.cmdLine = readCommandLine(&shell);
-	  shell.cmds = parseCommand(shell.cmdLine, &exit_status);
-		if (exit_status == EXIT_SUCCESS)
+		if (shell.cmdLine)
 		{
-			/*search & execution */
-			get_exes(&shell);
-			exit_status = validate_commands(shell.cmds);
-			if (!shell.exit_code && exit_status)
-				shell.exit_code = 1;
-			if (exit_status == EXIT_SUCCESS)
-				shell.exit_code = command_exec(&shell);
-			if (shell.isatty)
-				exit_status = EXIT_SUCCESS;
-			else
-				break;
-			free_command(shell.cmds);
-			free(shell.cmdLine);
-			shell.cmds = NULL;
+			shell.cmds = parseCommand(shell.cmdLine, &exit_status);
+			if (shell.cmdLine && exit_status == EXIT_SUCCESS)
+			{
+				get_exes(&shell);
+				exit_status = validate_commands(shell.cmds);
+				if (!shell.exit_code && exit_status)
+					shell.exit_code = 1;
+				if (exit_status == EXIT_SUCCESS)
+					shell.exit_code = command_exec(&shell);
+				free_command(shell.cmds);
+				free(shell.cmdLine);
+				shell.cmdLine = NULL;
+				shell.cmds = NULL;
+			}
 		}
+		else
+			break;
 	}
 	terminate_shell(&shell);
-	return (0);
+	exit(0);
 }
