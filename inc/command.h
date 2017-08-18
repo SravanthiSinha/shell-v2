@@ -19,7 +19,7 @@ typedef struct Command
 } Command;
 
 int command_size(Command *command);
-int command_add(Command **command, char *str, char *args);
+void command_add(Command **command, char *content, char *input, int *exitcode);
 void print_command(Command *command);
 void free_command(Command *head);
 #endif

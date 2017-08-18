@@ -20,8 +20,8 @@ int handle_sigaction(void)
 {
 	struct sigaction sa;
 
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_handler = sigquit_handler;
-
 	return (sigaction(SIGQUIT, &sa, NULL));
 }

@@ -14,26 +14,22 @@ int is_path(char *str)
 
 /**
  * get_exes - Fills the command with respective exes of the command.
- * @cmds: The list of commands to be executed
+ * @shell : shell info
  * Return: Nothing
  */
-void get_exes(Command *cmds)
+void get_exes(Shell *shell)
 {
 	int i = 0;
-	char **absolute_paths = NULL, *path = NULL;
+	char **absolute_paths = NULL, *path = NULL, *path_var = _getenv("PATH");
 	Command *cmd = NULL;
 
-	cmd = cmds;
-	absolute_paths = _stringsplit(_getenv("PATH"), ':', NULL);
+	cmd = shell->cmds;
+	absolute_paths = _stringsplit(path_var, ':', NULL);
 	while (absolute_paths && absolute_paths[i] && cmd)
 	{
 		if (!is_path(cmd->str))
 		{
-			path = (char *)malloc(
-				sizeof(char) * (_strlen(absolute_paths[i]) + _strlen(cmd->str) + 2));
-			_strcpy(path, absolute_paths[i]);
-			_strcat(path, "/");
-			_strcat(path, cmd->str);
+			path =  _stradd(absolute_paths[i], cmd->str, "/");
 			if (exe_exists(path))
 			{
 				cmd->path = _strdup(path);
@@ -57,6 +53,9 @@ void get_exes(Command *cmds)
 			cmd = cmd->next;
 		}
 		free(path);
+		path = NULL;
+		free(path_var);
+		path_var = NULL;
 	}
 	free_array(absolute_paths);
 }

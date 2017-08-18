@@ -6,9 +6,9 @@
  * @command: The Command where the values are added.
  * @content: The value to be added.
  * @input: user input to be converted in to command.
- * Return: on success: EXIT_SUCCESS - 0 , on Failure: EXIT_FAILURE -2.
+ * @exit_code: exit code  of failure on malloc
  */
-int command_add(Command **command, char *content, char *input)
+void command_add(Command **command, char *content, char *input, int *exit_code)
 {
 	Command *head = NULL;
 	Command *node = NULL;
@@ -17,28 +17,32 @@ int command_add(Command **command, char *content, char *input)
 	if (head == NULL)
 	{
 		head = (Command *)malloc(sizeof(Command));
-		if (head == NULL)
-			return (EXIT_FAILURE);
-		head->str = _strdup(content);
-		head->args = _stringsplit(input, ' ', NULL);
-		head->builtin = 0;
-		head->next = NULL;
-		*command = head;
-		return (EXIT_SUCCESS);
+		if (head != NULL)
+		{
+			head->str = _strdup(content);
+			head->args = _stringsplit(input, ' ', NULL);
+			head->builtin = 0;
+			head->next = NULL;
+			*command = head;
+			*exit_code = EXIT_SUCCESS;
+			return;
+		}
 	}
 	else
 	{
 		node = (Command *)malloc(sizeof(Command));
-		if (node == NULL)
-			return (1);
-		node->str = _strdup(content);
-		node->builtin = 0;
-		node->args = _stringsplit(input, ' ', NULL);
-		node->next = *command;
-		*command = node;
-		return (EXIT_SUCCESS);
+		if (node != NULL)
+		{
+			node->str = _strdup(content);
+			node->builtin = 0;
+			node->args = _stringsplit(input, ' ', NULL);
+			node->next = *command;
+			*command = node;
+			*exit_code = EXIT_SUCCESS;
+			return;
+		}
 	}
-	return (EXIT_FAILURE);
+	*exit_code = EXIT_FAILURE;
 }
 
 /**
@@ -98,7 +102,16 @@ void free_command(Command *head)
 	{
 		temp = head;
 		head = head->next;
-		free(temp->str);
+		if (temp->str)
+		{
+			free(temp->str);
+			temp->str = NULL;
+		}
+		if (temp->path)
+		{
+			free(temp->path);
+			temp->path = NULL;
+		}
 		free_array(temp->args);
 		free(temp);
 	}

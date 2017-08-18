@@ -1,5 +1,6 @@
 #include "hsh.h"
 
+
 /**
  * _getenv - The  _getenv() function searches the environment list to find
  * the environment variable name, and returns a pointer to the corresponding
@@ -11,7 +12,40 @@
  */
 char *_getenv(const char *name)
 {
+	int i = 0;
+	char **arr = NULL;
+	char *path = NULL;
+
+	if (name)
+	{
+		while (environ[i])
+		{
+			arr = _stringsplit(environ[i], '=', 0);
+			if (arr && (_strcmp(arr[0], name) == 0))
+			{
+				path = _strdup(arr[1]);
+				free_array(arr);
+				return (path);
+			}
+			free_array(arr);
+			i++;
+		}
+	}
+	return (NULL);
+}
+
+/**
+ * _findenv - The  _findenv() function searches the environment list to find
+ * the environment variable name, and returns the corresponding value
+ * @name: variable name.
+ *
+ * Return: A pointer to the value in the environment,
+ * or NULL if there is no match.
+ */
+char *_findenv(const char *name)
+{
 	int i = 0, j = 0;
+	char *n = NULL;
 
 	if (name)
 	{
@@ -19,10 +53,13 @@ char *_getenv(const char *name)
 		{
 			while (environ[i][j++] != '=')
 				;
-			if (strcmp(strndup(environ[i], j - 1), name) == 0)
+			n = _strndup(environ[i], j - 1);
+			if (_strcmp(n, name) == 0)
 			{
+				free(n);
 				return (environ[i] + j);
 			}
+			free(n);
 			i++;
 			j = 0;
 		}
@@ -44,14 +81,14 @@ int _putenv(const char *name, const char *value)
 	char **envp, *env;
 	static int first = 1;
 
-	cnt = strlen(name) + strlen(value) + 2;
+	cnt = _strlen(name) + _strlen(value) + 2;
 	env = malloc(sizeof(char) * cnt);
 	if (env == NULL)
 		return (-1);
 	memset(env, '\0', cnt);
-	strcpy(env, name);
-	strcat(env, "=");
-	strcat(env, value);
+	_strcpy(env, name);
+	_strcat(env, "=");
+	_strcat(env, value);
 	while (environ[i] != NULL)
 		i++;
 	if (first)
@@ -60,7 +97,7 @@ int _putenv(const char *name, const char *value)
 		if (envp == NULL)
 			return (-1);
 		first = 0;
-		(void)memcpy(envp, environ, sizeof(char *) * i);
+		(void)_memcpy(envp, environ, sizeof(char *) * i);
 	}
 	else
 	{
@@ -69,7 +106,7 @@ int _putenv(const char *name, const char *value)
 			return (-1);
 	}
 	environ = envp;
-	environ[i] = strdup(env);
+	environ[i] = _strdup(env);
 	environ[i + 1] = NULL;
 	return (0);
 }
@@ -90,12 +127,12 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 	if (name != NULL)
 	{
-		env = _getenv(name);
+		env = _findenv(name);
 		if (env != NULL)
 		{
 			if (!overwrite)
 				return (0);
-			if (strlen(env) >= strlen(value))
+			if (_strlen(env) >= _strlen(value))
 			{
 				while ((*env++ = *value++))
 					;
@@ -103,7 +140,7 @@ int _setenv(const char *name, const char *value, int overwrite)
 			}
 			else
 			{
-				strcpy(env, value);
+				_strcpy(env, value);
 				return (0);
 			}
 		}
@@ -129,7 +166,7 @@ int _unsetenv(const char *name)
 	env = _getenv(name);
 	if (env == NULL)
 		return (0);
-	while (strcmp(strtok(environ[i], "="), name) != 0)
+	while (_strcmp(strtok(environ[i], "="), name) != 0)
 		i++;
 	while (environ[i] != NULL)
 	{

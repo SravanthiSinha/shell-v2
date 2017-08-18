@@ -1,4 +1,4 @@
-#include "hsh.h"
+#include "builtins.h"
 
 
 /**
@@ -6,7 +6,7 @@
  * @name: The builtin
  * Return: on success: valid function pointer - 0 , on Failure: NULL.
  */
-int (*get_op_func(char *name))(char **)
+int (*get_op_func(char *name))(Shell *, char **)
 {
 	int i;
 	char *builtins[] = {"env", "cd"};
@@ -21,55 +21,54 @@ int (*get_op_func(char *name))(char **)
 /**
  * handle_builtins - Execute the builtins
  * @cmd: The builtin
- * @prev_status: The exit status of the previous command
+ * @shell : shell info
  * Return: On Success - EXIT_SUCCESS, On Failure - EXIT_FAILURE.
  */
-int handle_builtins(Command *cmd, int *prev_status)
+int handle_builtins(Shell *shell, Command *cmd)
 {
 	int count = 0;
-	int (*a)(char **);
+	int (*a)(Shell *, char **);
 
 	if (_strcmp(cmd->str, "exit") == 0)
 	{
 		count = array_size(cmd->args);
 		if (count == 1)
-			do_exit(*prev_status);
+			do_exit(shell, shell->exit_code);
 		if (count > 2 && are_numbers(cmd->args + 1))
 		{
 			print_error(cmd->str, NULL, HSH_TOO_MANY_ARGS);
-			*prev_status = 1;
+			shell->exit_code = 1;
 			return (EXIT_FAILURE);
 		}
 		else
-			do_exit(_atoi(cmd->args[1]));
+			do_exit(shell, _atoi(cmd->args[1]));
 	}
 	a = get_op_func(cmd->str);
 	if (a == NULL)
 	{
 		print_error(cmd->str, NULL, HSH_NOT_FOUND);
-		*prev_status = 1;
+		shell->exit_code = 1;
 		return (EXIT_FAILURE);
 	}
-	return ((*a)(cmd->args));
+	return ((*a)(shell, cmd->args));
 }
 
 /**
- * execute_cmd - Execute the command
- * @cmds: The list of commands to be executed
- * @prev_status: The exit status of the previous command
+ * command_exec - Execute the command
+ * @shell : shell info
  * Return: On Success - EXIT_SUCCESS, On Failure - EXIT_FAILURE.
  */
-int execute_cmd(Command *cmds, int *prev_status)
+int command_exec(Shell *shell)
 {
 	Command *cmd = NULL;
 	int  child_pid, status;
 
-	cmd = cmds;
+	cmd = shell->cmds;
 	while (cmd)
 	{
 		if (cmd->builtin)
 		{
-			handle_builtins(cmd, prev_status);
+			handle_builtins(shell, cmd);
 			cmd = cmd->next;
 		}
 		else
