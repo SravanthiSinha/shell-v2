@@ -39,4 +39,5 @@ void print_error(Shell *shell, char *cmd, char *path, int error_code)
 		shell->exit_status = 127;
 	else
 		shell->exit_status = HSH_FAILURE;
+	fflush(stderr);
 }

@@ -7,9 +7,13 @@
  */
 void command_exec_child(Shell *shell, Command *cmd)
 {
-	execve(cmd->path, cmd->args, NULL);
+	if (cmd->path)
+	{
+		execve(cmd->path, cmd->args, NULL);
+	}
 	print_error(shell, cmd->args[0], NULL, HSH_COMMAND_NOT_FOUND);
-	do_exit(shell, 127);
+	terminate_shell(shell);
+	_exit(127);
 }
 
 /**
