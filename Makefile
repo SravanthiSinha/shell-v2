@@ -19,7 +19,6 @@ _SRC 	= 	main.c \
 					command/command_io.c \
 					command/command_lexer.c \
 					command/get_exes.c \
-					command/validate_commands.c \
 					command/execute_commands.c \
 					command/get_exes.c \
 					command/handle_builtins.c \

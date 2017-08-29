@@ -1,6 +1,22 @@
 #include "builtins.h"
 
 /**
+ * is_builtin - Validates if the name is a builtin
+ * @name: The builtin to be validated.
+ * Return: On Success - 1, On Failure - 0.
+ */
+int is_builtin(char *name)
+{
+	char *builtins[] = {"exit", "env", "cd"};
+	int i = 0;
+
+	for (i = 0; i < 3; i++)
+		if (_strcmp(builtins[i], name) == 0)
+			return (1);
+	return (0);
+}
+
+/**
  * get_op_func - returns the function pointer of the corresponding builtin
  * @name: The builtin
  * Return: on success: valid function pointer - 0 , on Failure: NULL.

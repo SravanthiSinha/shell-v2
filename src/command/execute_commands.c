@@ -8,6 +8,7 @@
 void command_exec_child(Shell *shell, Command *cmd)
 {
 	execve(cmd->path, cmd->args, NULL);
+	print_error(shell, cmd->args[0], NULL, HSH_COMMAND_NOT_FOUND);
 	do_exit(shell, 127);
 }
 
@@ -74,9 +75,7 @@ void exec_command(Shell *shell, Command *cmd)
 			handle_builtins(shell, cmd);
 		else
 		{
-			shell->exit_status = validate_command(shell, cmd);
-			if (shell->exit_status == HSH_SUCCESS)
-				shell->exit_status = fork_exec(shell, cmd);
+			shell->exit_status = fork_exec(shell, cmd);
 		}
 	}
 }
