@@ -40,7 +40,7 @@ Implemented the built-in command env:
 * Prints the current environment
 
 #### Redirections
-Handle the stream redirections >, < , >> , << , |
+Handles the stream redirections >, < , >> , << , |
 
 Usage:
 
@@ -125,7 +125,7 @@ drwxr-xr-x 17 root root     4096 Aug  3  2016 cache$
 drwxr-xr-x  2 root root     4096 Aug 24 10:24 backups$
 ```
 
-#### control operators
+#### Control operators
 Handles the commands separator ; , && , ||
 
 ```

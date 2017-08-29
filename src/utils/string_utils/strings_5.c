@@ -22,8 +22,8 @@ char *_strapp(char *s1, char *s2)
 	if (out != NULL)
 	{
 		if (s1)
-			memcpy(out, s1, s1_len);
-		memcpy(out + s1_len, s2, s2_len + 1);
+			_memcpy(out, s1, s1_len);
+		_memcpy(out + s1_len, s2, s2_len + 1);
 	}
 	free(s1);
 	return (out);

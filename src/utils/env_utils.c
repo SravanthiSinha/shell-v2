@@ -85,7 +85,7 @@ int _putenv(const char *name, const char *value)
 	env = malloc(sizeof(char) * cnt);
 	if (env == NULL)
 		return (-1);
-	memset(env, '\0', cnt);
+	_memset(env, '\0', cnt);
 	_strcpy(env, name);
 	_strcat(env, "=");
 	_strcat(env, value);
@@ -101,7 +101,8 @@ int _putenv(const char *name, const char *value)
 	}
 	else
 	{
-		envp = (char **)realloc((char *)environ, sizeof(char *) * (i + 2));
+		envp = (char **)_realloc((char *)environ, sizeof(char *) * (i + 2),
+		sizeof(envp));
 		if (envp == NULL)
 			return (-1);
 	}

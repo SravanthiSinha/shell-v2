@@ -10,7 +10,7 @@ void init_shell(Shell *shell)
 	shell->std[0] = -1;
 	shell->std[1] = -1;
 	shell->std[2] = -1;
-	shell->isatty = isatty(fileno(stdin));
+	shell->isatty = isatty(STDIN_FILENO);
 	shell->exit_status = HSH_SUCCESS;
 	shell->cmdLine = NULL;
 	shell->cmds = NULL;

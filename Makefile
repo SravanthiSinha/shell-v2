@@ -8,6 +8,7 @@ _SRC 	= 	main.c \
 					utils/string_utils/strings_3.c \
 					utils/string_utils/strings_4.c \
 					utils/string_utils/strings_5.c \
+					utils/string_utils/strings_6.c \
 					utils/env_utils.c \
 					utils/path_utils.c \
 					utils/int_utils.c \
