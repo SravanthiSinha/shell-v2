@@ -17,18 +17,18 @@ Redirections are used to change where a command reads its input or sends its out
 existing reference to a file.  The overall format used for redirection is:
 
 .RS
-[n] redir-op file
+[command] redir-op file
 
-where redir-op is one of the redirection operators mentioned previously.  Following is a list of the possible redirections.  The [n] is an optional number, as in ‘3’ (not ‘[3]’), that refers to a file descriptor.
-[n]> file   Redirect standard output (or n) to file.
+where redir-op is one of the redirection operators mentioned previously.  Following is a list of the possible redirections.
+[command]> file   Redirect standard output to file.
 
-[n]>> file  Append standard output (or n) to file.
+[command]>> file  Append standard output to file.
 
-[n]< file   Redirect standard input (or n) from file.
+[command]< file   Redirect standard input from file.
 
 The following redirection is often called a “here-document”.
 
-[n]<< delimiter
+[command]<< delimiter
      here-doc-text ...
 delimiter
 
