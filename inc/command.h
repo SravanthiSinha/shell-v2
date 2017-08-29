@@ -23,9 +23,6 @@ typedef struct Command
 	struct Command *next;
 } Command;
 
-#define FREE(x) free(x);\
-	x = NULL
-
 int command_size(Command *command);
 void command_init(Command **command);
 void print_commands(Command *command);
