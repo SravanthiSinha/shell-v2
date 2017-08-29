@@ -11,7 +11,57 @@ hsh  is a a UNIX command line interpreter.
 .BI Overview
 The shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands.
 .TP
+.BI Redirections
+
+Redirections are used to change where a command reads its input or sends its output.  In general, redirections open, close, or duplicate an
+existing reference to a file.  The overall format used for redirection is:
+
+.RS
+[n] redir-op file
+
+where redir-op is one of the redirection operators mentioned previously.  Following is a list of the possible redirections.  The [n] is an optional number, as in ‘3’ (not ‘[3]’), that refers to a file descriptor.
+[n]> file   Redirect standard output (or n) to file.
+
+[n]>> file  Append standard output (or n) to file.
+
+[n]< file   Redirect standard input (or n) from file.
+
+The following redirection is often called a “here-document”.
+
+[n]<< delimiter
+     here-doc-text ...
+delimiter
+
+.RE
+.TP
+.BI Command Exit Status
+
+Each command has an exit status that can influence the behaviour of other shell commands.  The paradigm is that a command exits with zero for
+normal or success, and non-zero for failure, error, or a false indication.  The man page for each command should indicate the various exit
+codes and what they mean.  Additionally, the builtin commands return exit codes, as does an executed shell function.
+
+If a command consists entirely of variable assignments then the exit status of the command is that of the last command substitution if any,
+otherwise 0.
+.TP
+.BI Pipelines
+
+A pipeline is a sequence of one or more commands separated by the control operator |.  The standard output of all but the last command is
+connected to the standard input of the next command.  The standard output of the last command is inherited from the shell, as usual.
+
+The format for a pipeline is:
+command1 [| command2 ...]
+
+The standard output of command1 is connected to the standard input of command2.  The standard input, standard output, or both of a command is
+considered to be assigned by the pipeline before any redirection specified by redirection operators that are part of the command.
+
+A ; or ⟨newline⟩ terminator causes the preceding AND-OR-list (described next) to be executed sequentially; a & causes asynchronous execution
+of the preceding AND-OR-list.
+
+Note that unlike some other shells, each process in the pipeline is a child of the invoking shell (unless it is a shell builtin, in which
+case it executes in the current shell -- but any effect it has on the environment is wiped).
+.TP
 .BI Builtins
+.RS
 This section lists the builtin commands which are builtin because they need to perform some operation that can't be performed by a separate
 process.  In addition to these, there are several other commands that may be builtin for efficiency (e.g.  printf(1), echo(1), test(1), etc).
 .TP

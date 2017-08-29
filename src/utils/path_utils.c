@@ -15,21 +15,6 @@ int is_dir(const char *filepath)
 }
 
 /**
- * swap - swaps the strings in place
- * @a: pointer to string a
- * @b: pointer to string b
- * Return: nothing.
- */
-void swap(char *a, char *b)
-{
-	char *c;
-
-	c = b;
-	b = a;
-	a = c;
-}
-
-/**
  * exe_exists - Validates if the path exsits
  * @path: The path to be validated
  * Return: On Success - 1, On Failure - 0.
@@ -42,4 +27,17 @@ int exe_exists(char *path)
 		return (0);
 	else
 		return (1);
+}
+
+
+/**
+ * is_path - Validates if the string is a path
+ * @str: The string to be validated
+ * Return: On Success - 1, On Failure - 0.
+ */
+int is_path(char *str)
+{
+	if (str && _strchr(str, '/'))
+		return (1);
+	return (0);
 }

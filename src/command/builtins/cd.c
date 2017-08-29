@@ -5,7 +5,7 @@
  * @shell : shell info
  * @args: This has the path to which the directory has to be changed to
  *
- * Return: On Success - EXIT_SUCCESS, On Failure - EXIT_FAILURE
+ * Return: On Success - HSH_SUCCESS, On Failure - HSH_FAILURE
  */
 int change_dir(Shell *shell, char **args)
 {
@@ -38,14 +38,15 @@ int change_dir(Shell *shell, char **args)
 				_setenv("OLDPWD", shell->pwd, 1);
 				shell->oldpwd = _strapp(shell->oldpwd, shell->pwd);
 				shell->pwd = _strapp(shell->pwd, abspath);
+				shell->exit_status = 0;
 			}
 			else
-			print_error(args[0], args[1], HSH_NO_FILE_DIR);
+				print_error(shell, NULL, args[1], HSH_NO_FILE_DIR);
 		}
 		free(path);
 		free(abspath);
 		path = NULL;
-		return (EXIT_SUCCESS);
+		return (HSH_SUCCESS);
 	}
-	return (EXIT_FAILURE);
+	return (HSH_FAILURE);
 }

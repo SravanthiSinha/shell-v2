@@ -6,8 +6,8 @@ int isNumericChar(char x);
 int _atoi(char *input);
 
 int is_dir(const char *filepath);
-void swap(char *a, char *b);
 int exe_exists(char *path);
+int is_path(char *str);
 
 void print_array(char **arr);
 void free_array(char **arr);

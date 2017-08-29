@@ -12,11 +12,13 @@ char *_strstr(char *haystack, char *needle);
 int _strcasecmp(const char *s1, const char *s2);
 char *_strrchr(const char *s, int c);
 char *_strcpy(char *dest, const char *src);
-char *ltrim(char *src);
+char *ltrim(char *src, char delim);
 char **_stringsplit(char *str, char delim, int *count);
 char *_strrev(char *str);
 char *_stradd(const char *s1, const char *s2, char *delim);
 void _removeafter(char *s, char delim);
 char *_strapp(char *s1, char *s2);
 void _memcpy(void *dest, void *src, size_t n);
+void swap(char *a, char *b);
+
 #endif

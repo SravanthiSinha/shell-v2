@@ -1,18 +1,6 @@
 #include "hsh.h"
 
 /**
- * is_path - Validates if the string is a path
- * @str: The string to be validated
- * Return: On Success - 1, On Failure - 0.
- */
-int is_path(char *str)
-{
-	if (str && _strchr(str, '/'))
-		return (1);
-	return (0);
-}
-
-/**
  * get_exes - Fills the command with respective exes of the command.
  * @shell : shell info
  * Return: Nothing
@@ -23,17 +11,18 @@ void get_exes(Shell *shell)
 	char **absolute_paths = NULL, *path = NULL, *path_var = _getenv("PATH");
 	Command *cmd = NULL;
 
-	cmd = shell->cmds;
+	cmd = *(shell->cmds);
 	absolute_paths = _stringsplit(path_var, ':', NULL);
 	while (absolute_paths && absolute_paths[i] && cmd)
 	{
-		if (!is_path(cmd->str))
+		if (cmd->args[0] && !is_path(cmd->args[0]))
 		{
-			path =  _stradd(absolute_paths[i], cmd->str, "/");
+			path =  _stradd(absolute_paths[i], cmd->args[0], "/");
 			if (exe_exists(path))
 			{
 				cmd->path = _strdup(path);
 				cmd = cmd->next;
+				i = 0;
 			}
 			else
 			{
@@ -48,8 +37,7 @@ void get_exes(Shell *shell)
 		}
 		else
 		{
-			cmd->path = _strdup(cmd->str);
-			cmd->str = NULL;
+			cmd->path = _strdup(cmd->args[0]);
 			cmd = cmd->next;
 		}
 		free(path);

@@ -7,11 +7,14 @@
  */
 void init_shell(Shell *shell)
 {
-	shell->stdin_fd = fileno(stdin);
-	shell->isatty = isatty(shell->stdin_fd);
-	shell->exit_code = 0;
+	shell->std[0] = -1;
+	shell->std[1] = -1;
+	shell->std[2] = -1;
+	shell->isatty = isatty(fileno(stdin));
+	shell->exit_status = HSH_SUCCESS;
 	shell->cmdLine = NULL;
 	shell->cmds = NULL;
+	shell->program = NULL;
 	shell->home = _getenv("HOME");
 	shell->pwd = _getenv("PWD");
 	shell->oldpwd = _getenv("OLDPWD");
@@ -26,27 +29,36 @@ void terminate_shell(Shell *shell)
 {
 	if (shell != NULL)
 	{
-		if (shell->cmdLine)
+		if (shell->cmdLine != NULL)
 		{
 			free(shell->cmdLine);
 			shell->cmdLine = NULL;
 		}
-		if (shell->home)
+		if (shell->home != NULL)
 		{
 			free(shell->home);
 			shell->home = NULL;
 		}
-		if (shell->pwd)
+		if (shell->pwd != NULL)
 		{
 			free(shell->pwd);
 			shell->pwd = NULL;
 		}
-		if (shell->oldpwd)
+		if (shell->oldpwd != NULL)
 		{
 			free(shell->oldpwd);
 			shell->oldpwd = NULL;
 		}
-		free_command(shell->cmds);
+		if (shell->program != NULL)
+		{
+			free(shell->program);
+			shell->program = NULL;
+		}
+		if (shell->cmds != NULL)
+		{
+			free_commands(*shell->cmds);
+			shell->cmds = NULL;
+		}
 		shell = NULL;
 	}
 }

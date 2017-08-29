@@ -11,46 +11,36 @@ int is_builtin(char *name)
 	int i = 0;
 
 	for (i = 0; i < 3; i++)
-	{
 		if (_strcmp(builtins[i], name) == 0)
 			return (1);
-	}
 	return (0);
 }
 
 /**
- * validate_commands - Validates if the command/path can exsits
- * @cmds: The list of commands to be executed
- * Return: On Success - EXIT_SUCCESS, On Failure - EXIT_FAILURE.
+ * validate_command - Validates if the command/path can exsits
+ * @shell : shell info
+ * @cmd: command to be validated
+ * Return: On Success - HSH_SUCCESS, On Failure - HSH_FAILURE.
  */
-int validate_commands(Command *cmds)
+int validate_command(Shell *shell, Command *cmd)
 {
-	Command *cmd;
-
-	cmd = cmds;
-	while (cmd)
+	if (cmd->args && cmd->args[0])
 	{
-		if (cmd->str)
+		if (is_builtin(cmd->args[0]))
+			return (HSH_SUCCESS);
+		else if (cmd->path == NULL)
 		{
-			if (is_builtin(cmd->str))
-			{
-				cmd->builtin = 1;
-			}
-			else if (cmd->path == NULL)
-			{
-				print_error(cmd->str, NULL, HSH_NOT_FOUND);
-				return (EXIT_FAILURE);
-			}
+			print_error(shell, cmd->args[0], NULL, HSH_COMMAND_NOT_FOUND);
+			return (127);
 		}
-		else if (cmd->path && cmd->str == NULL)
+		else if (cmd->path)
 		{
 			if (!exe_exists(cmd->path))
 			{
-				print_error(NULL, cmd->path, HSH_NO_FILE_DIR);
-				return (EXIT_FAILURE);
+				print_error(shell, NULL, cmd->path, HSH_NO_FILE_DIR);
+				return (HSH_FAILURE);
 			}
 		}
-		cmd = cmd->next;
 	}
-	return (EXIT_SUCCESS);
+	return (HSH_SUCCESS);
 }

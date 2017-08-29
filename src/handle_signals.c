@@ -8,7 +8,7 @@
  */
 void sigquit_handler(int __attribute__((unused)) signum)
 {
-	exit(EXIT_SUCCESS);
+	exit(HSH_SUCCESS);
 }
 
 /**
