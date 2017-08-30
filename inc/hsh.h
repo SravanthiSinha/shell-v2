@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define HSH_SUCCESS 0
 #define HSH_FAILURE 1
@@ -53,6 +54,7 @@ extern char **environ;
  * @program : name of the program
  * @pwd: $PWD environmental variable
  * @oldpwd: $OLDPWD environmental variable
+ * @lineno: lineno of the command in shell
  */
 typedef struct Shell
 {
@@ -66,6 +68,7 @@ typedef struct Shell
 	char *pwd;
 	char *program;
 	char *oldpwd;
+	int lineno;
 } Shell;
 
 /**
@@ -82,7 +85,7 @@ typedef struct token_s
 } token_t;
 
 
-void init_shell(Shell *shell);
+void init_shell(Shell *shell, char *argv[]);
 void terminate_shell(Shell *shell);
 
 void printPrompt(Shell *shell);

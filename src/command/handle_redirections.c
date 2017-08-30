@@ -19,14 +19,14 @@ int handle_out_redirection(Shell *shell, Command *cmd)
 	fd = open(cmd->redirect_to, flags, mode);
 	if (fd == -1)
 	{
-		perror("hsh: open");
+		perror("hsh: cannot open");
 		shell->exit_status = 1;
 		return (0);
 	}
 	shell->std[1] = dup(STDOUT_FILENO);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
-		perror("hsh: dup2");
+		perror("hsh: cannot dup2");
 		shell->exit_status = 1;
 		return (0);
 	}
@@ -43,7 +43,7 @@ int handle_pipe(Shell *shell)
 {
 	if (pipe(shell->pipefd) == -1)
 	{
-		perror("hsh: pipe");
+		perror("hsh: cannot pipe");
 		shell->exit_status = 1;
 		return (0);
 	}
@@ -64,15 +64,16 @@ int handle_in_redirection(Shell *shell, char *out_file)
 	fd = open(out_file, O_RDONLY, mode);
 	if (fd == -1)
 	{
-		perror("hsh: open");
-		shell->exit_status = 1;
+		fprintf(stderr, "%s: %d: cannot open %s: No such file\n",
+			shell->program, shell->lineno, out_file);
+		shell->exit_status = 2;
 		return (0);
 	}
 	shell->std[0] = dup(STDIN_FILENO);
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		perror("hsh: dup2");
-		shell->exit_status = 1;
+		perror("hsh: cannot dup2");
+		shell->exit_status = 2;
 		return (0);
 	}
 	close(fd);
@@ -97,7 +98,7 @@ int handle_heredoc(Shell *shell, Command *cmd)
 	fd = open("shell_heredoc_buffer", flags, mode);
 	if (fd == -1)
 	{
-		perror("hsh: open");
+		perror("hsh: cannot open");
 		shell->exit_status = 1;
 		return (0);
 	}
@@ -120,7 +121,7 @@ int handle_heredoc(Shell *shell, Command *cmd)
 	}
 	if (ret == -1 && line == NULL)
 	{
-		perror("hsh: getline");
+		perror("hsh: cannot getline");
 		close(fd);
 		shell->exit_status = 1;
 		return (0);

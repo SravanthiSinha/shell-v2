@@ -4,8 +4,9 @@
  * init_shell - Intialialises the shell with enviroanmental variables and
  * others defaults
  * @shell : shell info
+ * @argv: Input  to the program
  */
-void init_shell(Shell *shell)
+void init_shell(Shell *shell, char *argv[])
 {
 	shell->std[0] = -1;
 	shell->std[1] = -1;
@@ -14,10 +15,11 @@ void init_shell(Shell *shell)
 	shell->exit_status = HSH_SUCCESS;
 	shell->cmdLine = NULL;
 	shell->cmds = NULL;
-	shell->program = NULL;
 	shell->home = _getenv("HOME");
 	shell->pwd = _getenv("PWD");
 	shell->oldpwd = _getenv("OLDPWD");
+	shell->lineno = 0;
+	shell->program = _strdup(argv[0]);
 }
 
 /**

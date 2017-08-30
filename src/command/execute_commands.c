@@ -128,7 +128,7 @@ void exec_commands(Shell *shell)
 	while (cmd)
 	{
 		if (!handle_redirections(shell, cmd))
-			shell->exit_status = 1;
+			shell->exit_status = 2;
 		else
 			exec_command(shell, cmd);
 		restore_std_fd(shell);

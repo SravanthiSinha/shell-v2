@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 {
 	Shell shell;
 	Command *cmds = NULL;
+	int status = 0;
 
 	if (argc != 1)
 	{
@@ -48,12 +49,12 @@ int main(int argc, char *argv[])
 		printf("Failure installing sighandler\n");
 		return (HSH_FAILURE);
 	}
-	init_shell(&shell);
-	shell.program = _strdup(argv[0]);
+	init_shell(&shell, argv);
 	while (1)
 	{
 		printPrompt(&shell);
 		shell.cmdLine = readCommandLine(&shell);
+		shell.lineno++;
 		if (shell.cmdLine)
 		{
 			lexer_run(&shell, &cmds);
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
 		else
 			break; /*reached eof*/
 	}
+	status = shell.exit_status;
 	terminate_shell(&shell);
-	return (0);
+	return (status);
 }
