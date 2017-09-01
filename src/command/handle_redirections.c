@@ -88,8 +88,7 @@ int handle_in_redirection(Shell *shell, char *out_file)
  */
 int handle_heredoc(Shell *shell, Command *cmd)
 {
-	int fd;
-	int flags = O_WRONLY | O_CREAT | O_TRUNC;
+	int flags = O_WRONLY | O_CREAT | O_TRUNC, fd;
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 	char *line = NULL;
 	size_t size;
@@ -104,7 +103,8 @@ int handle_heredoc(Shell *shell, Command *cmd)
 	}
 	while (1)
 	{
-		printf("> ");
+		if (shell->isatty)
+			write(1, "> ", 2);
 		ret = getline(&line, &size, stdin);
 		if (ret <= 0)
 			break;
