@@ -161,21 +161,16 @@ int _setenv(const char *name, const char *value, int overwrite)
  */
 int _unsetenv(const char *name)
 {
-	char *env;
-	int i = 0;
+	const size_t len = _strlen(name);
+	char **ep, **dp;
 
-	env = _getenv(name);
-	if (env == NULL)
-		return (0);
-	while (_strcmp(strtok(environ[i], "="), name) != 0)
-		i++;
-	while (environ[i] != NULL)
-	{
-		if (environ[i + 1])
-			swap(_getenv(environ[i]), _getenv(environ[i + 1]));
-		else
-			environ[i] = NULL;
-		i++;
-	}
+	for (ep = environ; *ep; ++ep)
+		if (!_strncmp(*ep, name, len) && (*ep)[len] == '=')
+		{
+			dp = ep;
+			do
+				dp[0] = dp[1];
+			while (*dp++);
+		}
 	return (0);
 }
