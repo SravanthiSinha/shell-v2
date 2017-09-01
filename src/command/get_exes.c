@@ -30,6 +30,8 @@ void get_exes(Shell *shell)
 					path = NULL;
 					break;
 				}
+				free(path);
+				path = NULL;
 				i++;
 			}
 		}

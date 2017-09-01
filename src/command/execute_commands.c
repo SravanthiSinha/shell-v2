@@ -69,7 +69,7 @@ int fork_exec(Shell *shell, Command *cmd)
  */
 void exec_command(Shell *shell, Command *cmd)
 {
-	if (cmd)
+	if (cmd && cmd->args[0])
 	{
 		if (is_builtin(cmd->args[0]))
 			shell->exit_status = handle_builtins(shell, cmd);
