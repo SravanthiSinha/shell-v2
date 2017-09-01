@@ -126,7 +126,7 @@ void exec_commands(Shell *shell)
 		else
 			exec_command(shell, cmd);
 		restore_std_fd(shell);
-		if (((shell->exit_status == HSH_FAILURE) && (cmd->op == HSH_OP_AND)) ||
+		if (((shell->exit_status != HSH_SUCCESS) && (cmd->op == HSH_OP_AND)) ||
 		    ((shell->exit_status == HSH_SUCCESS) && (cmd->op == HSH_OP_OR)))
 		{
 			op = cmd->op;
