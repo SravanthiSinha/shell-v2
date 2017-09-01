@@ -17,27 +17,23 @@ void get_exes(Shell *shell)
 	{
 		if (is_path(cmd->args[0]))
 			cmd->path = _strdup(cmd->args[0]);
-		else if (absolute_paths && absolute_paths[i])
+		else
 		{
-			path =  _stradd(absolute_paths[i], cmd->args[0], "/");
-			if (exe_exists(path))
+			i = 0;
+			while (absolute_paths && absolute_paths[i])
 			{
-				cmd->path = _strdup(path);
-				free(path);
-				path = NULL;
-				i = 0;
-			}
-			else
-			{
-				if (absolute_paths[i + 1] == NULL)
+				path =  _stradd(absolute_paths[i], cmd->args[0], "/");
+				if (exe_exists(path))
 				{
-					cmd->path = NULL;
-					i = 0;
+					cmd->path = _strdup(path);
+					free(path);
+					path = NULL;
+					break;
 				}
+				i++;
 			}
-			i++;
 		}
-	 cmd = cmd->next;
+		cmd = cmd->next;
 	}
 	free(path_var);
 	path_var = NULL;
