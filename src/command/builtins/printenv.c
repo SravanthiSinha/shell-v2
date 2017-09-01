@@ -16,7 +16,7 @@ int printenv(Shell *shell, char **args)
 	if (count == 1)
 	{
 		shell->exit_status = HSH_SUCCESS;
-		while (environ && environ[i])
+		while (*environ && environ[i])
 		{
 			printf("%s\n", environ[i]);
 			i++;
@@ -25,7 +25,7 @@ int printenv(Shell *shell, char **args)
 	else if (count > 1)
 	{
 		print_error(shell, args[0], args[1], HSH_NO_FILE_DIR);
-		shell->exit_status = HSH_FAILURE;
+		return (2);
 	}
 	return (HSH_SUCCESS);
 }

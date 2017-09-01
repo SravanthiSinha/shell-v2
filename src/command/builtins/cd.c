@@ -9,44 +9,41 @@
  */
 int change_dir(Shell *shell, char **args)
 {
-	int count = 0;
-	char *path = NULL;
-	char *abspath = NULL;
+	int count = array_size(args), status = 0;
+	char *path = NULL, *cwd = NULL;
 
-	count = array_size(args);
-	if (count == 1) /* no path given*/
-		abspath = _strdup(shell->home);
-	else if (count > 1)
+	if (count > 1)
+	{
 		path = _strdup(args[1]);
+		if (_strcmp(path, "-") == 0)
+		{
+			path = _getenv("OLDPWD");
+			if (path == NULL)
+				path = _getenv("PWD");
+			printf("%s\n", path);
+		}
+	}
+	else
+		path = _strdup(shell->home);
 	if (path)
 	{
-		if ((_strcmp(path, "-") != 0) && (_strcmp(path, ".") != 0))
+		cwd = _getenv("PWD");
+		status = chdir(path) * -2;
+		if (status == 0)
 		{
-			if (path[0] == '/' && count > 1)
-				abspath = _stradd(shell->pwd, path, NULL);
-			else if (count > 1)
-				abspath = _stradd(shell->pwd, path, "/");
-			if (exe_exists(abspath))
-			{
-				chdir(abspath);
-				if ((_strcmp(args[1], "..") == 0))
-				{
-					_removeafter(abspath, '/');
-					_removeafter(abspath, '/');
-				}
-				_setenv("PWD", abspath, 1);
-				_setenv("OLDPWD", shell->pwd, 1);
-				shell->oldpwd = _strapp(shell->oldpwd, shell->pwd);
-				shell->pwd = _strapp(shell->pwd, abspath);
-				shell->exit_status = 0;
-			}
-			else
-				print_error(shell, NULL, args[1], HSH_NO_FILE_DIR);
+			_setenv("OLDPWD", cwd, 1);
+			_setenv("PWD", path, 1);
 		}
+		else
+		{
+			if (errno == EACCES || errno == ENOENT || errno == ELOOP ||
+			    errno == ENOTDIR)
+				print_error(shell, "cd", NULL, errno);
+			else
+				print_error(shell, "cd", path, HSH_CANNOT);
+		}
+		free(cwd);
 		free(path);
-		free(abspath);
-		path = NULL;
-		return (HSH_SUCCESS);
 	}
-	return (HSH_FAILURE);
+	return (status);
 }

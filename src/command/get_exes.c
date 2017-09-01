@@ -12,7 +12,7 @@ void get_exes(Shell *shell)
 	Command *cmd = NULL;
 
 	cmd = *(shell->cmds);
-	absolute_paths = _stringsplit(path_var, ':', NULL);
+	absolute_paths = path_var != NULL ? _stringsplit(path_var, ':', NULL) : NULL;
 	while (absolute_paths && absolute_paths[i] && cmd)
 	{
 		if (cmd->args[0] && !is_path(cmd->args[0]))

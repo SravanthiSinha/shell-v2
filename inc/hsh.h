@@ -19,11 +19,12 @@
 #define HSH_SUCCESS 0
 #define HSH_FAILURE 1
 #define HSH_COMMAND_NOT_FOUND 2
-#define HSH_TOO_MANY_ARGS 3
+#define HSH_ILLEGAL_NUMBER 3
 #define HSH_NO_FILE_DIR 4
 #define HSH_IS_DIR 5
 #define HSH_IS_NOT_DIR 6
 #define HSH_SYNTAX_ERROR 7
+#define HSH_CANNOT 8
 
 #define HSH_OP_NONE 0
 #define HSH_OP_AND 1
@@ -52,8 +53,6 @@ extern char **environ;
  * @cmds:  list of commands
  * @home: $HOME environmental variable
  * @program : name of the program
- * @pwd: $PWD environmental variable
- * @oldpwd: $OLDPWD environmental variable
  * @lineno: lineno of the command in shell
  */
 typedef struct Shell
@@ -65,9 +64,7 @@ typedef struct Shell
 	int std[3];    /* for redirection of stdin, stdout, stderr*/
 	int pipefd[2]; /* for redirection when pipe is used*/
 	char *home;
-	char *pwd;
 	char *program;
-	char *oldpwd;
 	int lineno;
 } Shell;
 
@@ -90,6 +87,7 @@ void terminate_shell(Shell *shell);
 
 void printPrompt(Shell *shell);
 
+char *get_str(char *str);
 char *readCommandLine(Shell *shell);
 
 void get_exes(Shell *shell);

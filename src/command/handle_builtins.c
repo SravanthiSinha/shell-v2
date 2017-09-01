@@ -49,13 +49,11 @@ int handle_builtins(Shell *shell, Command *cmd)
 		count = array_size(cmd->args);
 		if (count == 1)
 			do_exit(shell, shell->exit_status);
-		if (count > 2 && are_numbers(cmd->args + 1))
-		{
-			print_error(shell, cmd->args[0], NULL, HSH_TOO_MANY_ARGS);
-			return (HSH_FAILURE);
-		}
-		else
+		else if (count >= 2 && isNumericChar(cmd->args[1][0]))
 			do_exit(shell, _atoi(cmd->args[1]));
+		else
+			print_error(shell, "exit", cmd->args[1], HSH_ILLEGAL_NUMBER);
+		return (2);
 	}
 	a = get_op_func(cmd->args[0]);
 	if (a == NULL)

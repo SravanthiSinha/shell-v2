@@ -10,35 +10,41 @@
  */
 void print_error(Shell *shell, char *cmd, char *path, int error_code)
 {
-	if (error_code == HSH_COMMAND_NOT_FOUND && !shell->isatty)
-		fprintf(stderr, "%s: %d: %s: not found\n", shell->program, shell->lineno,
-			cmd);
-	else if (error_code == HSH_COMMAND_NOT_FOUND)
-		fprintf(stdout, "%s: not found\n", cmd);
-	else if (error_code == HSH_TOO_MANY_ARGS)
-		fprintf(stdout, "%s\n%s: %s: too many arguments\n", cmd, shell->program,
-			cmd);
+	char *error_msg = NULL;
+	FILE *op = stdout;
+
+	if (!shell->isatty)
+		op = stderr;
+	if (error_code == HSH_COMMAND_NOT_FOUND)
+		error_msg = _strdup("not found");
+	else if (error_code == HSH_ILLEGAL_NUMBER)
+		error_msg = _strdup("Illegal number:");
 	else if (error_code == HSH_NO_FILE_DIR)
-	{
-		if (cmd != NULL)
-			fprintf(stdout, "%s: %s: %s: No such file or directory\n", shell->program,
-				cmd, path);
-		else
-			fprintf(stdout, "%s: %s: No such file or directory\n", shell->program,
-				path);
-	}
-	else if (error_code == HSH_IS_DIR)
-		fprintf(stdout, "%s: %s: Is a directory\n", shell->program, path);
-	else if (error_code == HSH_IS_NOT_DIR)
-		fprintf(stdout, "%s: %s: Not a directory\n", shell->program, path);
+		error_msg = _strdup("No such file or directory");
+	else if (error_code == EACCES)
+		error_msg = _strdup("Permission denied");
+	else if (error_code == ELOOP)
+		error_msg = _strdup("Too many symbolic links");
+	else if (error_code == ENOENT)
+		error_msg = _strdup("No such directory");
+	else if (error_code == ENOTDIR)
+		error_msg = _strdup("Not a directory");
+	else if (error_code == HSH_CANNOT)
+		error_msg = _strdup("can't cd to");
 	else if (error_code == HSH_SYNTAX_ERROR)
-		fprintf(stdout, "%s: syntax error near unexpected token `%s'\n",
-			shell->program, cmd);
+		error_msg = _strdup("Syntax error");
 	if (!shell->isatty && error_code == HSH_SYNTAX_ERROR)
 		do_exit(shell, 2);
 	if (error_code == HSH_COMMAND_NOT_FOUND)
 		shell->exit_status = 127;
 	else
 		shell->exit_status = HSH_FAILURE;
+	if (path)
+		fprintf(op, "%s: %d: %s: %s %s\n", shell->program, shell->lineno, cmd,
+			error_msg, path);
+	else
+		fprintf(op, "%s: %d: %s: %s\n", shell->program, shell->lineno, cmd,
+			error_msg);
+	free(error_msg);
 	fflush(stderr);
 }

@@ -26,11 +26,6 @@ int fork_exec(Shell *shell, Command *cmd)
 {
 	int status = 0, child_pid = fork();
 
-	if (child_pid == -1)
-	{
-		perror("fork");
-		exit(HSH_FAILURE);
-	}
 	if (child_pid == 0)
 	{
 		if (cmd->redirect_type == HSH_OP_REDIRECT_PIPE_OUT)
@@ -62,6 +57,7 @@ int fork_exec(Shell *shell, Command *cmd)
 		else if (cmd->redirect_type == HSH_OP_REDIRECT_PIPE_IN)
 			close(shell->pipefd[READ_END]);
 		wait(&status);
+		shell->exit_status = WEXITSTATUS(status);
 	}
 	return (status);
 }
@@ -76,11 +72,9 @@ void exec_command(Shell *shell, Command *cmd)
 	if (cmd)
 	{
 		if (is_builtin(cmd->args[0]))
-			handle_builtins(shell, cmd);
+			shell->exit_status = handle_builtins(shell, cmd);
 		else
-		{
-			shell->exit_status = fork_exec(shell, cmd);
-		}
+			fork_exec(shell, cmd);
 	}
 }
 

@@ -16,8 +16,6 @@ void init_shell(Shell *shell, char *argv[])
 	shell->cmdLine = NULL;
 	shell->cmds = NULL;
 	shell->home = _getenv("HOME");
-	shell->pwd = _getenv("PWD");
-	shell->oldpwd = _getenv("OLDPWD");
 	shell->lineno = 0;
 	shell->program = _strdup(argv[0]);
 }
@@ -40,16 +38,6 @@ void terminate_shell(Shell *shell)
 		{
 			free(shell->home);
 			shell->home = NULL;
-		}
-		if (shell->pwd != NULL)
-		{
-			free(shell->pwd);
-			shell->pwd = NULL;
-		}
-		if (shell->oldpwd != NULL)
-		{
-			free(shell->oldpwd);
-			shell->oldpwd = NULL;
 		}
 		if (shell->program != NULL)
 		{

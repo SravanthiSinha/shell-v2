@@ -19,11 +19,21 @@ char *readCommandLine(Shell *shell)
 		return (readCommandLine(shell));
 	}
 	else if (read <= 0)
+	{
+		free(buff);
+		buff = NULL;
 		return (NULL);
-	input = _strdup(buff);
+	}
+	input = _strdup(get_str(buff));
 	free(buff);
 	buff = NULL;
-	input[_strlen(input) - 1] = '\0';
+	if (input && _strlen(input))
+		input[_strlen(input) - 1] = '\0';
+	else
+	{
+		free(input);
+		return (NULL);
+	}
 	return (input);
 }
 
@@ -54,9 +64,9 @@ int main(int argc, char *argv[])
 	{
 		printPrompt(&shell);
 		shell.cmdLine = readCommandLine(&shell);
-		shell.lineno++;
-		if (shell.cmdLine)
+		if (shell.cmdLine && _strlen(shell.cmdLine))
 		{
+			shell.lineno++;
 			lexer_run(&shell, &cmds);
 			shell.cmds = &cmds;
 			if (shell.cmds)
