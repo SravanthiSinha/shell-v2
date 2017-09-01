@@ -15,9 +15,10 @@ void init_shell(Shell *shell, char *argv[])
 	shell->exit_status = HSH_SUCCESS;
 	shell->cmdLine = NULL;
 	shell->cmds = NULL;
-	shell->home = _getenv("HOME");
 	shell->lineno = 0;
 	shell->program = _strdup(argv[0]);
+	if (getcwd(shell->home, sizeof(shell->home)) == NULL)
+		perror("hsh %s");
 }
 
 /**
@@ -33,11 +34,6 @@ void terminate_shell(Shell *shell)
 		{
 			free(shell->cmdLine);
 			shell->cmdLine = NULL;
-		}
-		if (shell->home != NULL)
-		{
-			free(shell->home);
-			shell->home = NULL;
 		}
 		if (shell->program != NULL)
 		{

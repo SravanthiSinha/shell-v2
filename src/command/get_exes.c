@@ -13,9 +13,9 @@ void get_exes(Shell *shell)
 
 	cmd = *(shell->cmds);
 	absolute_paths = path_var != NULL ? _stringsplit(path_var, ':', NULL) : NULL;
-	while (absolute_paths && absolute_paths[i] && cmd)
+	while (cmd)
 	{
-		if (cmd->args[0] && !is_path(cmd->args[0]))
+		if (!is_path(cmd->args[0]) && absolute_paths && absolute_paths[i])
 		{
 			path =  _stradd(absolute_paths[i], cmd->args[0], "/");
 			if (exe_exists(path))
