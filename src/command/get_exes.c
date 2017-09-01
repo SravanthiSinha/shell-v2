@@ -15,13 +15,16 @@ void get_exes(Shell *shell)
 	absolute_paths = path_var != NULL ? _stringsplit(path_var, ':', NULL) : NULL;
 	while (cmd)
 	{
-		if (!is_path(cmd->args[0]) && absolute_paths && absolute_paths[i])
+		if (is_path(cmd->args[0]))
+			cmd->path = _strdup(cmd->args[0]);
+		else if (absolute_paths && absolute_paths[i])
 		{
 			path =  _stradd(absolute_paths[i], cmd->args[0], "/");
 			if (exe_exists(path))
 			{
 				cmd->path = _strdup(path);
-				cmd = cmd->next;
+				free(path);
+				path = NULL;
 				i = 0;
 			}
 			else
@@ -29,21 +32,14 @@ void get_exes(Shell *shell)
 				if (absolute_paths[i + 1] == NULL)
 				{
 					cmd->path = NULL;
-					cmd = cmd->next;
 					i = 0;
 				}
 			}
 			i++;
 		}
-		else
-		{
-			cmd->path = _strdup(cmd->args[0]);
-			cmd = cmd->next;
-		}
-		free(path);
-		path = NULL;
-		free(path_var);
-		path_var = NULL;
+	 cmd = cmd->next;
 	}
+	free(path_var);
+	path_var = NULL;
 	free_array(absolute_paths);
 }

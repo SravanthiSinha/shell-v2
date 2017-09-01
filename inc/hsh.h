@@ -63,7 +63,7 @@ typedef struct Shell
 	struct Command **cmds;
 	int std[3];    /* for redirection of stdin, stdout, stderr*/
 	int pipefd[2]; /* for redirection when pipe is used*/
-	char home[1024];
+	char *home;
 	char *program;
 	int lineno;
 } Shell;
