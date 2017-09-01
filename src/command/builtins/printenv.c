@@ -5,7 +5,7 @@
  * @shell : shell info
  * @args: This has the command "env"
  *
- * Return: On Success - HSH_SUCCESS, On Failure - HSH_FAILURE
+ * Return: On Success - HSH_SUCCESS, On Failure - 2
  */
 int printenv(Shell *shell, char **args)
 {

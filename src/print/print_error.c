@@ -25,6 +25,8 @@ void print_error(Shell *shell, char *cmd, char *path, int error_code)
 		error_msg = _strdup("can't cd to");
 	else if (error_code == HSH_SYNTAX_ERROR)
 		error_msg = _strdup("Syntax error");
+	else if (error_code == HSH_MISSING_ARGUMENTS)
+		error_msg = _strdup("Missing arguments");
 	if (!shell->isatty && error_code == HSH_SYNTAX_ERROR)
 		do_exit(shell, 2);
 	if (error_code == HSH_COMMAND_NOT_FOUND)

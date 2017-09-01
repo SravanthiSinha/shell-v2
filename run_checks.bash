@@ -1,5 +1,5 @@
 #!/bin/bash
-FILES="tests/hsh1.$1/*"
+FILES="tests/hsh$1/*"
 i=0
 for f in $FILES
 do

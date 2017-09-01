@@ -25,6 +25,8 @@ _SRC 	= 	main.c \
 					command/handle_redirections.c \
 					command/builtins/cd.c	\
 					command/builtins/printenv.c \
+					command/builtins/setenv.c \
+					command/builtins/unsetenv.c \
 					command/builtins/exit.c
 SRC 	= 	$(patsubst %,$(SDIR)/%,$(_SRC))
 

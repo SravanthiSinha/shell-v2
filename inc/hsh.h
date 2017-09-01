@@ -25,6 +25,7 @@
 #define HSH_SYNTAX_ERROR 7
 #define HSH_CANNOT 8
 #define HSH_COMMAND_NOT_FOUND 9
+#define HSH_MISSING_ARGUMENTS 10
 
 #define HSH_OP_NONE 0
 #define HSH_OP_AND 1
