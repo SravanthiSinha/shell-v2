@@ -18,13 +18,13 @@
 
 #define HSH_SUCCESS 0
 #define HSH_FAILURE 1
-#define HSH_COMMAND_NOT_FOUND 2
 #define HSH_ILLEGAL_NUMBER 3
 #define HSH_NO_FILE_DIR 4
 #define HSH_IS_DIR 5
 #define HSH_IS_NOT_DIR 6
 #define HSH_SYNTAX_ERROR 7
 #define HSH_CANNOT 8
+#define HSH_COMMAND_NOT_FOUND 9
 
 #define HSH_OP_NONE 0
 #define HSH_OP_AND 1

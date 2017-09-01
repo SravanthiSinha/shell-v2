@@ -38,8 +38,6 @@ int change_dir(Shell *shell, char **args)
 		{
 			if (errno == EACCES || errno == ENOENT || errno == ELOOP ||
 			    errno == ENOTDIR)
-				print_error(shell, "cd", NULL, errno);
-			else
 				print_error(shell, "cd", path, HSH_CANNOT);
 		}
 		free(cwd);

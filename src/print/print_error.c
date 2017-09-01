@@ -21,14 +21,6 @@ void print_error(Shell *shell, char *cmd, char *path, int error_code)
 		error_msg = _strdup("Illegal number:");
 	else if (error_code == HSH_NO_FILE_DIR)
 		error_msg = _strdup("No such file or directory");
-	else if (error_code == EACCES)
-		error_msg = _strdup("Permission denied");
-	else if (error_code == ELOOP)
-		error_msg = _strdup("Too many symbolic links");
-	else if (error_code == ENOENT)
-		error_msg = _strdup("No such directory");
-	else if (error_code == ENOTDIR)
-		error_msg = _strdup("Not a directory");
 	else if (error_code == HSH_CANNOT)
 		error_msg = _strdup("can't cd to");
 	else if (error_code == HSH_SYNTAX_ERROR)
