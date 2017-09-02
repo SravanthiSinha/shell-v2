@@ -1,18 +1,16 @@
 #include "hsh.h"
 
-
 /**
- * sigquit_handler - handler for the signal SIGQUIT
- * @signum: signal number
- * Return : void.
+ * sigint_handler - Catch SIGINT (CTRL+C)
+ * @signum: Signal number
  */
-void sigquit_handler(int __attribute__((unused)) signum)
+void sigint_handler(int signum)
 {
-	exit(HSH_SUCCESS);
+	(void)signum;
 }
 
 /**
- * handle_sigaction - a function that set a handler for the signal SIGQUIT
+ * handle_sigaction - a function that set a handler for the signal SIGINT
  * Return: 0 on success, or -1 on error.
  */
 
@@ -22,6 +20,6 @@ int handle_sigaction(void)
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
-	sa.sa_handler = sigquit_handler;
-	return (sigaction(SIGQUIT, &sa, NULL));
+	sa.sa_handler = sigint_handler;
+	return (sigaction(SIGINT, &sa, NULL));
 }

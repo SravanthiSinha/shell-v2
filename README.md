@@ -39,6 +39,14 @@ Implemented the built-in command env:
 
 * Prints the current environment
 
+Implemented the built-in command setenv:
+
+* Sets the environment variable
+
+Implemented the built-in command unsetenv:
+
+* Unset/remove the environment variable
+
 #### Redirections
 Handles the stream redirections >, < , >> , << , |
 
