@@ -13,6 +13,8 @@ int _strcasecmp(const char *s1, const char *s2);
 char *_strrchr(const char *s, int c);
 char *_strcpy(char *dest, const char *src);
 char *ltrim(char *src, char delim);
+char *rtrim(char *src, char c);
+char *trim(char *src, char c);
 char **_stringsplit(char *str, char delim, int *count);
 char *_strrev(char *str);
 char *_stradd(const char *s1, const char *s2, char *delim);

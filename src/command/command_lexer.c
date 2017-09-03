@@ -16,8 +16,16 @@ static token_t s_tokens[] = {
  */
 char *get_str(char *str)
 {
-	while (*str && (*str == ' ' || *str == '\t'))
-		str++;
+	while (*str && (*str == ' ' || *str == '\t' || *str == '#'))
+	{
+		if (*str == '#')
+		{
+			while (*str)
+				str++;
+		}
+		else
+			str++;
+	}
 	return (str);
 }
 
