@@ -3,6 +3,13 @@ CFLAGS 	= 	-Wall -Werror -Wextra -pedantic -g
 
 _SRC 	= 	main.c \
 					handle_signals.c \
+					utils/hashtable_utils/djb2.c \
+					utils/hashtable_utils/hash_table_create.c \
+					utils/hashtable_utils/hash_table_delete.c \
+					utils/hashtable_utils/hash_table_get.c \
+					utils/hashtable_utils/hash_table_print.c \
+					utils/hashtable_utils/hash_table_set.c \
+					utils/hashtable_utils/key_index.c \
 					utils/string_utils/strings.c \
 					utils/string_utils/strings_2.c \
 					utils/string_utils/strings_3.c \
@@ -18,22 +25,22 @@ _SRC 	= 	main.c \
 					print/print_prompt.c \
 					command/command_io.c \
 					command/command_lexer.c \
-					command/get_exes.c \
+					command/expand_commands.c \
 					command/execute_commands.c \
-					command/get_exes.c \
 					command/handle_builtins.c \
 					command/handle_redirections.c \
 					command/builtins/cd.c	\
 					command/builtins/printenv.c \
 					command/builtins/setenv.c \
 					command/builtins/unsetenv.c \
+					command/builtins/alias.c \
 					command/builtins/exit.c
 SRC 	= 	$(patsubst %,$(SDIR)/%,$(_SRC))
 
 _OBJ 	= 	$(_SRC:.c=.o)
 OBJECTS 	= 	$(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_DEPS 	= 	options.h signals.h string_utils.h hsh.h command.h builtins.h utils.h
+_DEPS 	= 	options.h signals.h string_utils.h hsh.h command.h builtins.h utils.h hash_tables.h
 DEPS 	= 	$(patsubst %,$(IDIR)/%,$(_DEPS))
 
 IDIR 	= 	./inc

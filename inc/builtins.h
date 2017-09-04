@@ -10,5 +10,6 @@ int printenv(Shell *shell, char **args);
 int change_dir(Shell *shell, char **args);
 int hsh_setenv(Shell *shell, char **args);
 int hsh_unsetenv(Shell *shell, char **args);
+int alias(Shell *shell, char **args);
 
 #endif

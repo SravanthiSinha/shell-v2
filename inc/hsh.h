@@ -5,6 +5,7 @@
 #include "signals.h"
 #include "strings.h"
 #include "utils.h"
+#include "hash_tables.h"
 #include <fcntl.h>
 #include <malloc.h>
 #include <stdio.h>
@@ -55,6 +56,7 @@ extern char **environ;
  * @home: $HOME environmental variable
  * @program : name of the program
  * @lineno: lineno of the command in shell
+ * @aliases: aliases
  */
 typedef struct Shell
 {
@@ -67,6 +69,7 @@ typedef struct Shell
 	char *home;
 	char *program;
 	int lineno;
+	hash_table_t *aliases;
 } Shell;
 
 /**
@@ -91,7 +94,7 @@ void printPrompt(Shell *shell);
 char *get_str(char *str);
 char *readCommandLine(Shell *shell);
 
-void get_exes(Shell *shell);
+void expand_commands(Shell *shell);
 
 void lexer_run(Shell *shell, Command **cmds);
 

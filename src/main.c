@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 			shell.cmds = &cmds;
 			if (shell.cmds)
 			{
-				get_exes(&shell);
+				expand_commands(&shell);
 				exec_commands(&shell);
 				free_commands(*shell.cmds);
 				shell.cmds = NULL;

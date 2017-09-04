@@ -7,10 +7,10 @@
  */
 int is_builtin(char *name)
 {
-	char *builtins[] = {"exit", "env", "cd", "setenv", "unsetenv"};
+	char *builtins[] = {"exit", "env", "cd", "setenv", "unsetenv", "alias"};
 	int i = 0;
 
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 6; i++)
 		if (_strcmp(builtins[i], name) == 0)
 			return (1);
 	return (0);
@@ -24,10 +24,10 @@ int is_builtin(char *name)
 int (*get_op_func(char *name))(Shell *, char **)
 {
 	int i;
-	char *builtins[] = {"env", "cd", "setenv", "unsetenv"};
-	funcPtr p[4] = {printenv, change_dir, hsh_setenv, hsh_unsetenv};
+	char *builtins[] = {"env", "cd", "setenv", "unsetenv", "alias"};
+	funcPtr p[] = {printenv, change_dir, hsh_setenv, hsh_unsetenv, alias};
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 5; i++)
 		if (_strcmp(builtins[i], name) == 0)
 			return (*p[i]);
 	return (NULL);

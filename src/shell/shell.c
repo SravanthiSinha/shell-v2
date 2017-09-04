@@ -18,6 +18,7 @@ void init_shell(Shell *shell, char *argv[])
 	shell->lineno = 0;
 	shell->program = _strdup(argv[0]);
 	shell->home = _getenv("HOME");
+	shell->aliases =  hash_table_create(1024);
 }
 
 /**
@@ -48,6 +49,11 @@ void terminate_shell(Shell *shell)
 		{
 			free_commands(*shell->cmds);
 			shell->cmds = NULL;
+		}
+		if (shell->aliases != NULL)
+		{
+			hash_table_delete(shell->aliases);
+			shell->aliases = NULL;
 		}
 		shell = NULL;
 	}
