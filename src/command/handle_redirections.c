@@ -8,7 +8,7 @@
  */
 int handle_out_redirection(Shell *shell, Command *cmd)
 {
-	int fd;
+	int fd, count, stdout_fd = STDOUT_FILENO;
 	int flags = O_WRONLY | O_CREAT;
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
@@ -23,8 +23,18 @@ int handle_out_redirection(Shell *shell, Command *cmd)
 		shell->exit_status = 1;
 		return (0);
 	}
-	shell->std[1] = dup(STDOUT_FILENO);
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	count = array_size(cmd->args);
+	if (count > 1)
+	{
+		if (_atoi(cmd->args[count - 1]))
+		{
+			stdout_fd = _atoi(cmd->args[count - 1]);
+			free(cmd->args[count - 1]);
+			cmd->args[count - 1] = NULL;
+		}
+	}
+	shell->std[1] = dup(stdout_fd);
+	if (dup2(fd, stdout_fd) == -1)
 	{
 		perror("hsh: cannot dup2");
 		shell->exit_status = 1;
