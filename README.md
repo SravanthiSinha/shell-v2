@@ -1,7 +1,34 @@
 # shell-v2
-Shell Version 2
+Shell Version 2 - A re-creation of a UNIX shell using C.
+## Download and Run Instructions
 
-The project concepts are in
+Clone Repo:
+```
+$ git clone https://github.com/SravanthiSinha/shell-v2.git
+```
+
+Compile:
+```
+$ make
+```
+
+Run the Executable:
+```
+$ ./hsh
+```
+
+To find all about features supported, run the manual:
+```
+$ man ./man_1_hsh
+```
+
+To run tests use run_checks.bash $foldername of tests:
+```
+$ ./run_checks.bash $folderno
+```
+
+## Development details
+The project concepts are explored in
 
 * https://github.com/SravanthiSinha/EYNTK-SHELL/blob/master/EYNTK-Shell-v1/README.md
 
@@ -23,44 +50,44 @@ Usage: hsh
 
 #### Builtins
 
-Implemented the built-in command exit:
+Implemented the built-in command **exit**:
 
 * exit built-in  behaves exactly like sh's
 * Handles arguments
 
-Implemented the built-in command cd:
+Implemented the built-in command **cd**:
 
 * Changes the current directory of the process.
 * Command syntax: cd [path]
 * If no argument is given to cd the command is interpreted like cd $HOME
 * Handles the command cd -
 
-Implemented the built-in command env:
+Implemented the built-in command **env**:
 
 * Prints the current environment
 
-Implemented the built-in command setenv:
+Implemented the built-in command **setenv**:
 
 * Sets the environment variable
 
-Implemented the built-in command unsetenv:
+Implemented the built-in command **unsetenv**:
 
 * Unset/remove the environment variable
 
 #### Redirections
-Handles the stream redirections >, < , >> , << , |
+Handles the stream redirections **>, < , >> , << , | **
 
 Usage:
 
-[command]> file   Redirect standard output to file.
+**[command]> file**   Redirect standard output to file.
 
-[command]>> file  Append standard output to file.
+**[command]>> file**  Append standard output to file.
 
-[command]< file   Redirect standard input from file.
+**[command]< file**   Redirect standard input from file.
 
-[command] | [command2..]   Redirect command output input of command2
+**[command] | [command2..]**   Redirect command output input of command2
 
-The following redirection is often called a “here-document”.
+The following redirection is often called a **here-document**.
 
 [command]<< delimiter
 
@@ -134,7 +161,7 @@ drwxr-xr-x  2 root root     4096 Aug 24 10:24 backups$
 ```
 
 #### Control operators
-Handles the commands separator ; , && , ||
+Handles the commands separator **; , && , ||**
 
 ```
 $ ls /var ; ls /var
